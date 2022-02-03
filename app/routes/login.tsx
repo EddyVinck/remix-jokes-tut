@@ -1,7 +1,7 @@
 import type { ActionFunction, LinksFunction } from "remix";
 import { useActionData, json, Link, useSearchParams } from "remix";
 import { db } from "~/utils/db.server";
-import { createUserSession, login } from "~/utils/session.server";
+import { createUserSession, login, register } from "~/utils/session.server";
 import stylesUrl from "../styles/login.css";
 
 export const links: LinksFunction = () => {
@@ -86,10 +86,14 @@ export const action: ActionFunction = async ({ request }) => {
       }
       // create the user
       // create their session and redirect to /jokes
-      return badRequest({
-        fields,
-        formError: "Not implemented",
-      });
+      const user = await register({ username, password });
+      if (!user) {
+        return badRequest({
+          fields,
+          formError: "Error creating user.",
+        });
+      }
+      return createUserSession(user.id, redirectTo);
     }
     default: {
       return badRequest({
