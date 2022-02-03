@@ -6,6 +6,7 @@ import {
   useCatch,
   Link,
   LoaderFunction,
+  Form,
 } from "remix";
 import { db } from "~/utils/db.server";
 import { getUserId, requireUserId } from "~/utils/session.server";
@@ -76,7 +77,7 @@ export default function NewJokeRoute() {
   return (
     <div>
       <p>Add your own hilarious joke</p>
-      <form
+      <Form
         method="post"
         aria-aria-describedby={
           actionData?.formError ? "form-error-message" : undefined
@@ -137,7 +138,7 @@ export default function NewJokeRoute() {
             Add
           </button>
         </div>
-      </form>
+      </Form>
     </div>
   );
 }
